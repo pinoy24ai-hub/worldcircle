@@ -424,7 +424,7 @@ function startTimer(seconds) {
     if (state.timerSec <= 8) timerBar.classList.add('warning');
     if (state.timerSec <= 0) {
       clearTimer();
-      showFeedback('⏱ Time's up!', 'bad');
+      showFeedback('⏱ Time\'s up!', 'bad');
       state.streak = 0;
       updateStreak();
       state.round++;
