@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>WordCircle</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- DIFFICULTY SCREEN -->
+  <div id="screen-difficulty" class="screen active">
+    <div class="logo-section">
+      <div class="logo-ring">
+        <span class="logo-letter" style="--i:0">W</span>
+        <span class="logo-letter" style="--i:1">O</span>
+        <span class="logo-letter" style="--i:2">R</span>
+        <span class="logo-letter" style="--i:3">D</span>
+        <span class="logo-letter" style="--i:4">C</span>
+        <span class="logo-letter" style="--i:5">I</span>
+        <span class="logo-letter" style="--i:6">R</span>
+        <span class="logo-letter" style="--i:7">C</span>
+        <span class="logo-letter" style="--i:8">L</span>
+        <span class="logo-letter" style="--i:9">E</span>
+      </div>
+      <p class="tagline">Swipe to Spell</p>
+    </div>
+
+    <div class="difficulty-cards">
+      <div class="diff-card" data-difficulty="easy">
+        <div class="diff-icon">&#9675;</div>
+        <div class="diff-name">Easy</div>
+        <div class="diff-desc">5-letter words<br>No timer</div>
+        <div class="diff-badge">Beginner</div>
+      </div>
+      <div class="diff-card" data-difficulty="medium">
+        <div class="diff-icon">&#9651;</div>
+        <div class="diff-name">Medium</div>
+        <div class="diff-desc">6-letter words<br>60 second timer</div>
+        <div class="diff-badge">Challenger</div>
+      </div>
+      <div class="diff-card" data-difficulty="hard">
+        <div class="diff-icon">&#9670;</div>
+        <div class="diff-name">Hard</div>
+        <div class="diff-desc">7-letter words<br>30 second timer</div>
+        <div class="diff-badge">Expert</div>
+      </div>
+      <div class="diff-card daily" data-difficulty="daily">
+        <div class="diff-icon">&#9733;</div>
+        <div class="diff-name">Daily Challenge</div>
+        <div class="diff-desc">One puzzle per day<br>Compete globally</div>
+        <div class="diff-badge" id="daily-badge">Today</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GAME SCREEN -->
+  <div id="screen-game" class="screen">
+    <div class="game-header">
+      <button class="btn-back" id="btn-back">&#8592;</button>
+      <div class="header-center">
+        <div class="round-progress">
+          <svg class="progress-ring" viewBox="0 0 48 48">
+            <circle class="progress-bg" cx="24" cy="24" r="20" />
+            <circle class="progress-fill" id="progress-circle" cx="24" cy="24" r="20" />
+          </svg>
+          <span id="round-label">1/10</span>
+        </div>
+        <div id="diff-label" class="diff-label">EASY</div>
+      </div>
+      <div class="score-block">
+        <div class="score-val" id="score-display">0</div>
+        <div class="score-lbl">PTS</div>
+      </div>
+    </div>
+
+    <div class="timer-bar-wrap" id="timer-bar-wrap">
+      <div class="timer-bar" id="timer-bar"></div>
+    </div>
+
+    <div class="word-slots" id="word-slots"></div>
+
+    <div class="current-word-display" id="current-word-display">
+      <span id="current-word-text">&nbsp;</span>
+    </div>
+
+    <div class="streak-display" id="streak-display"></div>
+
+    <div class="wheel-wrapper" id="wheel-wrapper">
+      <canvas id="trail-canvas"></canvas>
+      <div id="wheel"></div>
+    </div>
+
+    <div class="controls">
+      <button class="ctrl-btn" id="btn-clear">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 6L5 6M6 6l1 12a2 2 0 002 2h6a2 2 0 002-2l1-12M10 11v6M14 11v6M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+        Clear
+      </button>
+      <button class="ctrl-btn" id="btn-shuffle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+        Shuffle
+      </button>
+      <button class="ctrl-btn hint-btn" id="btn-hint">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+        Hint <span id="hint-cost">-5</span>
+      </button>
+    </div>
+
+    <div class="feedback-banner" id="feedback-banner"></div>
+  </div>
+
+  <!-- COMPLETE SCREEN -->
+  <div id="screen-complete" class="screen">
+    <div class="complete-inner">
+      <div class="complete-trophy">&#127942;</div>
+      <h2 id="complete-title">Round Complete!</h2>
+      <div class="final-score-block">
+        <div class="final-score-num" id="final-score">0</div>
+        <div class="final-score-lbl">TOTAL SCORE</div>
+      </div>
+      <div class="stats-grid" id="stats-grid"></div>
+      <div class="complete-actions">
+        <button class="btn-primary" id="btn-play-again">Play Again</button>
+        <button class="btn-secondary" id="btn-menu">Main Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAILY RESULT SCREEN -->
+  <div id="screen-daily-result" class="screen">
+    <div class="complete-inner">
+      <div class="complete-trophy">&#11088;</div>
+      <h2>Daily Challenge</h2>
+      <div class="daily-date" id="daily-date"></div>
+      <div class="final-score-block">
+        <div class="final-score-num" id="daily-score">0</div>
+        <div class="final-score-lbl">YOUR SCORE</div>
+      </div>
+      <div class="share-text-box" id="share-text-box"></div>
+      <div class="complete-actions">
+        <button class="btn-primary" id="btn-copy-share">&#128203; Copy Result</button>
+        <button class="btn-secondary" id="btn-daily-menu">Main Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="words.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
